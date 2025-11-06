@@ -2,7 +2,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 
 # --- 1. Veri Yapısı ---
-# Tarifleri bir liste içinde sözlük olarak tutalım
+# 6 adet tarifi sözlük olarak yazdım. 
 tarifler = [
     {
         "ad": "Menemen",
@@ -118,10 +118,9 @@ tarifler = [
         ]
     }
 ]
-# Sizin kodunuzdaki 'kapak' değişkeni ile aynı mantık
+# Kitap uygulamasındaki'kapak' değişkeni ile aynı mantık
 mevcut_tarif_no = 0
-
-# --- 2. Pencere Kurulumu ---
+
 pencere = Tk()
 pencere.title("Tarif Kitabı")
 pencere.geometry("500x750") # Pencereyi biraz büyüttüm
@@ -129,16 +128,12 @@ pencere.geometry("500x750") # Pencereyi biraz büyüttüm
 # --- 3. Widget'ları (Etiketleri) BİR KEZ Oluşturma ---
 # Bu etiketler başta boş olacak, goster() fonksiyonu içlerini dolduracak
 
-# Ana Başlık (Bu sabit kalacak)
 ana_baslik = Label(pencere, text="Yemek Tarifleri", font=("Times New Roman", 28, "bold"))
 ana_baslik.grid(row=0, column=0, padx=10, pady=10)
 
-# Değişecek olan tarif başlığı
 tarif_baslik_label = Label(pencere, text="", font=("Times New Roman", 22, "bold"), fg="blue")
 tarif_baslik_label.grid(row=1, column=0, padx=10, pady=5)
-
-# Değişecek olan görsel
-# Başlangıçta boş bir Label
+
 gorsel_label = Label(pencere)
 gorsel_label.grid(row=2, column=0, padx=10, pady=10)
 
@@ -159,31 +154,33 @@ talimatlar_label.grid(row=6, column=0, padx=10, pady=5)
 # --- 4. Fonksiyonlar ---
 
 def goster():
-    # 1. Mevcut tarifi listeden al
+    # 1. Mevcut tarifi listeden alır ve izlemeye başlar. 
     tarif = tarifler[mevcut_tarif_no]
     
-    # 2. Etiketlerin içeriğini .config() ile GÜNCELLE
+    # 2. Etiketlerin içeriğini .config() ile GÜNCELLE (?)
     
-    # Başlığı güncelle
+    # Başlığı değiştirir.
     tarif_baslik_label.config(text=tarif['baslik'])
     
-    # Malzemeleri güncelle
+    # Malzemeleri değiştirir.
     malzemeler_label.config(text=tarif['malzemeler'])
     
-    # Talimatları güncelle
+    # Talimatları değiştirir.
     talimatlar_label.config(text=tarif['talimatlar'])
     
-    # Görseli güncelle
+    # Görseli değiştirir.
     try:
         # Resmi aç ve yeniden boyutlandır (tüm resimler aynı boyutta olsun)
         img = Image.open(tarif['gorsel_yolu'])
-        img = img.resize((400, 300), Image.LANCZOS) # Boyutlandırma
+        img = img.resize((400, 300), Image.LANCZOS) # Tüm  resimleri aynı boyutta olmaları için ayarlar.
         gorsel = ImageTk.PhotoImage(img)
         
-        # Görsel etiketini güncelle
+        # Görsellerin olduğu dosyanın adını değiştirdim
         gorsel_label.config(image=gorsel)
-        gorsel_label.image = gorsel # Bu satır çok önemli! (Referansı tutar)
-        
+        gorsel_label.image = gorsel # Referansı tutması içinmiş...  
+    
+
+    # Hata vermesi durumunda (Kaldırılabilir)    
     except FileNotFoundError:
         # Resim bulunamazsa
         gorsel_label.config(image=None, text=f"Resim bulunamadı:\n{tarif['gorsel_yolu']}")
@@ -192,7 +189,7 @@ def goster():
         print(f"Hata: {e}")
         gorsel_label.config(image=None, text="Resim yüklenemedi")
 
-# Sizin 'sonraki' fonksiyonunuzla birebir aynı mantık
+# Sizin 'sonraki' fonksiyonunuzla birebir aynı mantık (Butonlar?)
 def sonraki():
     global mevcut_tarif_no
     if mevcut_tarif_no < len(tarifler) - 1:
@@ -201,17 +198,18 @@ def sonraki():
         mevcut_tarif_no = 0
     print(mevcut_tarif_no)
     
-    # Değişen 'mevcut_tarif_no'ya göre etiketleri güncelle
-    goster()
+    # Tarifler arasında gezinebilmek için... 
 
 # --- 5. Buton ve Başlatma ---
 
 # Sizin butonunuzla aynı
 buton = Button(text="Sonraki Tarif", command=sonraki)
 buton.grid(row=7, column=0, padx=10, pady=20)
-buton.config(font=("Arial", 20))
+buton.config(font=("Times New Roman", 20))
 
 # Program başladığında ilk tarifi göster
 goster()
 
 pencere.mainloop()
+
+# Dosya bulunamadı hatası?

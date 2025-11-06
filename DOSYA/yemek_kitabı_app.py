@@ -120,7 +120,8 @@ tarifler = [
 ]
 # Kitap uygulamasındaki'kapak' değişkeni ile aynı mantık
 mevcut_tarif_no = 0
-
+
+
 pencere = Tk()
 pencere.title("Tarif Kitabı")
 pencere.geometry("500x750") # Pencereyi biraz büyüttüm
@@ -133,7 +134,8 @@ ana_baslik.grid(row=0, column=0, padx=10, pady=10)
 
 tarif_baslik_label = Label(pencere, text="", font=("Times New Roman", 22, "bold"), fg="blue")
 tarif_baslik_label.grid(row=1, column=0, padx=10, pady=5)
-
+
+
 gorsel_label = Label(pencere)
 gorsel_label.grid(row=2, column=0, padx=10, pady=10)
 
@@ -154,49 +156,35 @@ talimatlar_label.grid(row=6, column=0, padx=10, pady=5)
 # --- 4. Fonksiyonlar ---
 
 def goster():
-    # 1. Mevcut tarifi listeden alır ve ekrana yazmaya başlar. 
     tarif = tarifler[mevcut_tarif_no]
-    
-    # 2. Etiketlerin içeriğini .config() ile GÜNCELLE (?)
-    
-    # Başlığı değiştirir.
-    tarif_baslik_label.config(text=tarif['baslik'])
-    
-    # Malzemeleri değiştirir.
-    malzemeler_label.config(text=tarif['malzemeler'])
-    
-    # Talimatları değiştirir.
-    talimatlar_label.config(text=tarif['talimatlar'])
-    
-    # Görseli değiştirir.
+
+    # Başlığı değiştir
+    tarif_baslik_label.config(text=tarif['ad'])
+
+    # Malzemeleri metin haline çevir
+    malzemeler_label.config(text="\n".join(tarif['malzemeler']))
+
+    # Yapılışı metin haline çevir
+    talimatlar_label.config(text="\n".join(tarif['yapilis']))
+
+    # Görseli göster
     try:
-        # Resmi aç ve yeniden boyutlandır (tüm resimler aynı boyutta olsun)
-        img = Image.open(tarif['gorsel_yolu'])
-        img = img.resize((400, 300), Image.LANCZOS) # Tüm  resimleri aynı boyutta olmaları için ayarlar.
+        img = Image.open(f"{tarif['resim']}.png")  # veya jpg, resimlerin uzantısına göre
+        img = img.resize((400, 300), Image.LANCZOS)
         gorsel = ImageTk.PhotoImage(img)
-        
-        # Görsellerin olduğu dosyanın adını değiştirdim
-        gorsel_label.config(image=gorsel)
-        gorsel_label.image = gorsel # Referansı tutması içinmiş...  
-    
-
-    # Hata vermesi durumunda (Kaldırılabilir)    
+        gorsel_label.config(image=gorsel, text="")
+        gorsel_label.image = gorsel
     except FileNotFoundError:
-        # Resim bulunamazsa
-        gorsel_label.config(image=None, text=f"Resim bulunamadı:\n{tarif['gorsel_yolu']}")
-    except Exception as e:
-        # Diğer hatalar için
-        print(f"Hata: {e}")
-        gorsel_label.config(image=None, text="Resim yüklenemedi")
+        gorsel_label.config(image=None, text=f"Resim bulunamadı:\n{tarif['resim']}")
 
-# Sizin 'sonraki' fonksiyonunuzla birebir aynı mantık (Butonlar?)
+
+# 🔽 BURAYA EKLE — goster()’ın hemen altına
 def sonraki():
     global mevcut_tarif_no
-    if mevcut_tarif_no < len(tarifler) - 1:
-        mevcut_tarif_no += 1
-    else:
-        mevcut_tarif_no = 0
-    print(mevcut_tarif_no)
+    mevcut_tarif_no = (mevcut_tarif_no + 1) % len(tarifler)
+    goster()
+
+
     
     # Tarifler arasında gezinebilmek için... 
 

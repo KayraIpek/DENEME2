@@ -154,7 +154,7 @@ talimatlar_label.grid(row=6, column=0, padx=10, pady=5)
 # --- 4. Fonksiyonlar ---
 
 def goster():
-    # 1. Mevcut tarifi listeden alır ve izlemeye başlar. 
+    # 1. Mevcut tarifi listeden alır ve ekrana yazmaya başlar. 
     tarif = tarifler[mevcut_tarif_no]
     
     # 2. Etiketlerin içeriğini .config() ile GÜNCELLE (?)

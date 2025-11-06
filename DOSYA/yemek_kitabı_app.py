@@ -113,8 +113,8 @@ tarifler = [
         "yapilis": [
             "Pirinçleri yıkayıp su ile yumuşayana kadar haşlayın.",
             "Sütü ekleyip kaynatın, şekerini ekleyip birkaç dakika daha pişirin.",
-            "İstersen nişastayı az su ile açıp ekleyip kıvamını ayarlayın.",
-            "Kaselere paylaştırıp soğuttuktan sonra tarçınla servis edin."
+            "İsterseniz nişastayı az su ile açıp ekleyip kıvamını ayarlayın.",
+            "Kaselere paylaştırıp soğuttuktan sonra tarçınla veya fındıkla servis edin."
         ]
     }
 ]

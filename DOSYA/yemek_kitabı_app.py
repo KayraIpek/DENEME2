@@ -199,5 +199,3 @@ buton.config(font=("Times New Roman", 20))
 goster()
 
 pencere.mainloop()
-
-# Dosya bulunamadı hatası?
